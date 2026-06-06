@@ -56,9 +56,10 @@ export const authAPI = {
 };
 
 export const productAPI = {
-  getProducts: (params) => api.get("/products", { params }),
+  getProducts: (params) =>
+    api.get("/products", { params: { limit: 100, ...params } }),
   getProduct: (idOrSlug) => api.get(`/products/${idOrSlug}`),
-  getCategories: () => api.get("/products/categories"),
+  getCategories: () => api.get("/categories"),
   getBrands: () => api.get("/products/brands"),
 
   // Privilege products modifications (Admin/Employee only)
@@ -95,7 +96,7 @@ export const reviewAPI = {
 export const adminAPI = {
   getStats: () => api.get("/admin/stats"),
   getCharts: () => api.get("/admin/charts"),
-  getUsers: () => api.get("/admin/users"),
+  getUsers: () => api.get("/users"),
   updateUserRole: (id, roleData) =>
     api.put(`/admin/users/${id}/role`, roleData),
 };

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Search, ShoppingCart, User, Menu, X, ChevronDown } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { useCart } from '@/lib/cart-context';
+import { useCategories } from '@/hooks/use-categories';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -17,15 +18,8 @@ import {
 export default function Header() {
   const { user, profile, signOut } = useAuth();
   const { itemCount } = useCart();
+  const categories = useCategories();
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  const categories = [
-    { name: 'Car Engine Oils', href: '/products?category=car-engine-oils' },
-    { name: 'Motorcycle Oils', href: '/products?category=motorcycle-oils' },
-    { name: 'Bus & Truck Oils', href: '/products?category=bus-truck-oils' },
-    { name: 'Vehicle Care', href: '/products?category=vehicle-care' },
-    { name: 'Industrial Lubricants', href: '/products?category=industrial-lubricants' },
-  ];
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-border">
@@ -73,7 +67,7 @@ export default function Header() {
                 <DropdownMenuSeparator />
                 {categories.map((cat) => (
                   <DropdownMenuItem key={cat.slug} asChild>
-                    <Link href={cat.href}>{cat.name}</Link>
+                    <Link href={`/products?category=${cat.slug}`}>{cat.name}</Link>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -173,7 +167,7 @@ export default function Header() {
             <Link href="/" onClick={() => setMobileOpen(false)} className="block px-3 py-2 text-sm font-medium hover:bg-secondary rounded-lg">Home</Link>
             <Link href="/products" onClick={() => setMobileOpen(false)} className="block px-3 py-2 text-sm font-medium hover:bg-secondary rounded-lg">All Products</Link>
             {categories.map((cat) => (
-              <Link key={cat.slug} href={cat.href} onClick={() => setMobileOpen(false)} className="block px-3 py-2 text-sm pl-6 hover:bg-secondary rounded-lg text-muted-foreground">
+              <Link key={cat.slug} href={`/products?category=${cat.slug}`} onClick={() => setMobileOpen(false)} className="block px-3 py-2 text-sm pl-6 hover:bg-secondary rounded-lg text-muted-foreground">
                 {cat.name}
               </Link>
             ))}

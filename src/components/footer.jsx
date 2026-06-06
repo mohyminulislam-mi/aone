@@ -1,14 +1,11 @@
+'use client';
+
 import Link from 'next/link';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { useCategories } from '@/hooks/use-categories';
 
 export default function Footer() {
-  const categories = [
-    { name: 'Car Engine Oils', href: '/products?category=car-engine-oils' },
-    { name: 'Motorcycle Oils', href: '/products?category=motorcycle-oils' },
-    { name: 'Bus & Truck Oils', href: '/products?category=bus-truck-oils' },
-    { name: 'Vehicle Care', href: '/products?category=vehicle-care' },
-    { name: 'Industrial Lubricants', href: '/products?category=industrial-lubricants' },
-  ];
+  const categories = useCategories();
 
   return (
     <footer className="bg-foreground text-background/90">
@@ -35,7 +32,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {categories.map((cat) => (
                 <li key={cat.slug}>
-                  <Link href={cat.href} className="text-sm text-background/60 hover:text-primary transition-colors">
+                  <Link href={`/products?category=${cat.slug}`} className="text-sm text-background/60 hover:text-primary transition-colors">
                     {cat.name}
                   </Link>
                 </li>
