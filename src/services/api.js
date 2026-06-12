@@ -10,40 +10,20 @@ const api = axios.create({
   },
 });
 
-// Request interceptor to attach JWT token from localStorage
-// api.interceptors.request.use(
-//   (config) => {
-//     if (typeof window !== "undefined") {
-//       const token = localStorage.getItem("token");
-//       if (token) {
-//         config.headers.Authorization = `Bearer ${token}`;
-//       }
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   },
-// );
-
-// Hook request/response interceptors to easily log or process errors globally
-// api.interceptors.response.use(
-//   (response) => response.data,
-//   (error) => {
-//     const status = error.response?.status;
-
-//     // Ignore expected guest auth check failures
-//     if (status !== 401) {
-//       const message =
-//         error.response?.data?.message ||
-//         "Something went wrong with the API connection";
-
-//       console.error("API Client Interceptor Error:", message);
-//     }
-
-//     return Promise.reject(error);
-//   },
-// );
+api.interceptors.request.use(
+  (config) => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("token");
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 
 export const authAPI = {
   register: (data) => api.post("/auth/register", data),
@@ -61,8 +41,6 @@ export const productAPI = {
   getProduct: (idOrSlug) => api.get(`/products/${idOrSlug}`),
   getCategories: () => api.get("/products/categories"),
   getBrands: () => api.get("/products/brands"),
-
-  // Privilege products modifications (Admin/Employee only)
   createProduct: (data) => api.post("/products", data),
   updateProduct: (id, data) => api.put(`/products/${id}`, data),
   deleteProduct: (id) => api.delete(`/products/${id}`),
@@ -73,8 +51,6 @@ export const orderAPI = {
   getMyOrders: () =>
     api.get("/orders/my-orders", { params: { _t: Date.now() } }),
   getOrderDetails: (id) => api.get(`/orders/${id}`),
-
-  // Privilege dispatch pipelines (Admin/Employee only)
   getAllOrders: () => api.get("/orders", { params: { _t: Date.now() } }),
   updateStatus: (id, statusData) => api.put(`/orders/${id}/status`, statusData),
 };
