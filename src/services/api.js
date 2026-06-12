@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const API_URL = "http://localhost:5000/api";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -11,39 +11,39 @@ const api = axios.create({
 });
 
 // Request interceptor to attach JWT token from localStorage
-api.interceptors.request.use(
-  (config) => {
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("token");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
+// api.interceptors.request.use(
+//   (config) => {
+//     if (typeof window !== "undefined") {
+//       const token = localStorage.getItem("token");
+//       if (token) {
+//         config.headers.Authorization = `Bearer ${token}`;
+//       }
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   },
+// );
 
 // Hook request/response interceptors to easily log or process errors globally
-api.interceptors.response.use(
-  (response) => response.data,
-  (error) => {
-    const status = error.response?.status;
+// api.interceptors.response.use(
+//   (response) => response.data,
+//   (error) => {
+//     const status = error.response?.status;
 
-    // Ignore expected guest auth check failures
-    if (status !== 401) {
-      const message =
-        error.response?.data?.message ||
-        "Something went wrong with the API connection";
+//     // Ignore expected guest auth check failures
+//     if (status !== 401) {
+//       const message =
+//         error.response?.data?.message ||
+//         "Something went wrong with the API connection";
 
-      console.error("API Client Interceptor Error:", message);
-    }
+//       console.error("API Client Interceptor Error:", message);
+//     }
 
-    return Promise.reject(error);
-  },
-);
+//     return Promise.reject(error);
+//   },
+// );
 
 export const authAPI = {
   register: (data) => api.post("/auth/register", data),
@@ -59,7 +59,7 @@ export const productAPI = {
   getProducts: (params) =>
     api.get("/products", { params: { limit: 100, ...params } }),
   getProduct: (idOrSlug) => api.get(`/products/${idOrSlug}`),
-  getCategories: () => api.get("/categories"),
+  getCategories: () => api.get("/products/categories"),
   getBrands: () => api.get("/products/brands"),
 
   // Privilege products modifications (Admin/Employee only)
