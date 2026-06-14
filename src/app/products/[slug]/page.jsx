@@ -17,7 +17,6 @@ import {
 import { productAPI } from "@/services/api";
 import { normalizeProduct, normalizeProducts, oneFrom } from "@/lib/api-data";
 import { useCart } from "@/lib/cart-context";
-import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -27,7 +26,6 @@ export default function ProductDetailPage() {
   const params = useParams();
   const slug = params.slug;
   const { addItem } = useCart();
-  const { user } = useAuth();
   const [product, setProduct] = useState(null);
   const [related, setRelated] = useState([]);
   const [quantity, setQuantity] = useState(1);
@@ -66,29 +64,14 @@ export default function ProductDetailPage() {
     loadProduct();
   }, [slug]);
 
-  console.log(product);
-
-  async function handleAddToCart() {
-    if (!user) {
-      toast.error("Please sign in to add items to cart");
-      return;
-    }
+  const handleAddToCart = () => {
+    if (!product) return;
 
     setAdding(true);
-
-    const { error } = await addItem({
-      productId: product.id,
-      quantity: quantity,
-    });
-
+    addItem(product, quantity);
+    toast.success(`${quantity} ${product.name} added to cart`);
     setAdding(false);
-
-    if (error) {
-      toast.error(error.message || "Failed to add to cart");
-    } else {
-      toast.success(`${product.name} added to cart`);
-    }
-  }
+  };
 
   if (loading) {
     return (

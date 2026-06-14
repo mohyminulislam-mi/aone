@@ -1,34 +1,34 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { CreditCard, Truck, Check, Loader2 } from 'lucide-react';
-import { useCart } from '@/lib/cart-context';
-import { useAuth } from '@/lib/auth-context';
-import { orderAPI } from '@/services/api';
-import { normalizeOrder, oneFrom } from '@/lib/api-data';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { toast } from 'sonner';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { CreditCard, Truck, Check, Loader2 } from "lucide-react";
+import { useCart } from "@/lib/cart-context";
+import { useAuth } from "@/lib/auth-context";
+import { orderAPI } from "@/services/api";
+import { normalizeOrder, oneFrom } from "@/lib/api-data";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { toast } from "sonner";
 
 export default function CheckoutPage() {
   const { items, subtotal, clearCart } = useCart();
   const { user, profile } = useAuth();
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState('cod');
+  const [paymentMethod, setPaymentMethod] = useState("cod");
   const [form, setForm] = useState({
-    full_name: profile?.full_name || '',
-    email: user?.email || '',
-    phone: profile?.phone || '',
-    address: profile?.address || '',
-    city: profile?.city || '',
-    state: profile?.state || '',
-    zip: profile?.zip || '',
+    full_name: profile?.full_name || "",
+    email: user?.email || "",
+    phone: profile?.phone || "",
+    address: profile?.address || "",
+    city: profile?.city || "",
+    state: profile?.state || "",
+    zip: profile?.zip || "",
   });
 
   const shipping = subtotal >= 50 ? 0 : 9.99;
@@ -42,6 +42,12 @@ export default function CheckoutPage() {
   async function handleSubmit(e) {
     e.preventDefault();
     if (items.length === 0) return;
+
+    // 👇 THIK EIKHANE EI LOG-GULO ADD KORUN
+    console.log("--- FRONTEND PAYLOAD DEBUG ---");
+    console.log("Form Data:", form);
+    console.log("Cart Items Array:", items);
+    console.log("First Item Structure:", items[0]);
 
     setSubmitting(true);
     try {
@@ -68,24 +74,24 @@ export default function CheckoutPage() {
         shippingAddress: shipping_address,
         payment_method: paymentMethod,
         paymentMethod,
-        status: 'pending',
+        status: "pending",
         items: orderItems,
         order_items: orderItems,
       });
-      const order = normalizeOrder(oneFrom(response, ['order']));
+      const order = normalizeOrder(oneFrom(response, ["order"]));
 
       await clearCart();
-      toast.success('Order placed successfully!');
-      router.push(order?.id ? `/orders/${order.id}` : '/orders');
+      toast.success("Order placed successfully!");
+      router.push(order?.id ? `/orders/${order.id}` : "/orders");
     } catch (err) {
-      toast.error(err.message || 'Failed to place order');
+      toast.error(err.message || "Failed to place order");
     } finally {
       setSubmitting(false);
     }
   }
 
   useEffect(() => {
-    if (!user) router.push('/auth/login');
+    if (!user) router.push("/auth/login");
   }, [user, router]);
 
   if (!user) {
@@ -120,33 +126,70 @@ export default function CheckoutPage() {
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="full_name">Full Name</Label>
-                    <Input id="full_name" value={form.full_name} onChange={(e) => updateForm('full_name', e.target.value)} required />
+                    <Input
+                      id="full_name"
+                      value={form.full_name}
+                      onChange={(e) => updateForm("full_name", e.target.value)}
+                      required
+                    />
                   </div>
                   <div>
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" value={form.email} onChange={(e) => updateForm('email', e.target.value)} required />
+                    <Input
+                      id="email"
+                      type="email"
+                      value={form.email}
+                      onChange={(e) => updateForm("email", e.target.value)}
+                      required
+                    />
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="phone">Phone</Label>
-                  <Input id="phone" type="tel" value={form.phone} onChange={(e) => updateForm('phone', e.target.value)} required />
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={form.phone}
+                    onChange={(e) => updateForm("phone", e.target.value)}
+                    required
+                  />
                 </div>
                 <div>
                   <Label htmlFor="address">Address</Label>
-                  <Input id="address" value={form.address} onChange={(e) => updateForm('address', e.target.value)} required />
+                  <Input
+                    id="address"
+                    value={form.address}
+                    onChange={(e) => updateForm("address", e.target.value)}
+                    required
+                  />
                 </div>
                 <div className="grid sm:grid-cols-3 gap-4">
                   <div>
                     <Label htmlFor="city">City</Label>
-                    <Input id="city" value={form.city} onChange={(e) => updateForm('city', e.target.value)} required />
+                    <Input
+                      id="city"
+                      value={form.city}
+                      onChange={(e) => updateForm("city", e.target.value)}
+                      required
+                    />
                   </div>
                   <div>
                     <Label htmlFor="state">State</Label>
-                    <Input id="state" value={form.state} onChange={(e) => updateForm('state', e.target.value)} required />
+                    <Input
+                      id="state"
+                      value={form.state}
+                      onChange={(e) => updateForm("state", e.target.value)}
+                      required
+                    />
                   </div>
                   <div>
                     <Label htmlFor="zip">ZIP Code</Label>
-                    <Input id="zip" value={form.zip} onChange={(e) => updateForm('zip', e.target.value)} required />
+                    <Input
+                      id="zip"
+                      value={form.zip}
+                      onChange={(e) => updateForm("zip", e.target.value)}
+                      required
+                    />
                   </div>
                 </div>
               </CardContent>
@@ -160,19 +203,27 @@ export default function CheckoutPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="space-y-3">
+                <RadioGroup
+                  value={paymentMethod}
+                  onValueChange={setPaymentMethod}
+                  className="space-y-3"
+                >
                   <div className="flex items-center space-x-3 border rounded-lg p-4 cursor-pointer hover:border-primary/30 transition-colors">
                     <RadioGroupItem value="cod" id="cod" />
                     <Label htmlFor="cod" className="flex-1 cursor-pointer">
                       <span className="font-medium">Cash on Delivery</span>
-                      <p className="text-xs text-muted-foreground">Pay when you receive the order</p>
+                      <p className="text-xs text-muted-foreground">
+                        Pay when you receive the order
+                      </p>
                     </Label>
                   </div>
                   <div className="flex items-center space-x-3 border rounded-lg p-4 cursor-pointer hover:border-primary/30 transition-colors">
                     <RadioGroupItem value="bank" id="bank" />
                     <Label htmlFor="bank" className="flex-1 cursor-pointer">
                       <span className="font-medium">Bank Transfer</span>
-                      <p className="text-xs text-muted-foreground">Pay via bank transfer</p>
+                      <p className="text-xs text-muted-foreground">
+                        Pay via bank transfer
+                      </p>
                     </Label>
                   </div>
                 </RadioGroup>
@@ -192,7 +243,9 @@ export default function CheckoutPage() {
                       <span className="text-muted-foreground line-clamp-1 flex-1 mr-2">
                         {item.products?.name} x{item.quantity}
                       </span>
-                      <span className="shrink-0">${(item.products?.price * item.quantity).toFixed(2)}</span>
+                      <span className="shrink-0">
+                        ${(item.products?.price * item.quantity).toFixed(2)}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -204,7 +257,13 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Shipping</span>
-                    <span>{shipping === 0 ? <span className="text-green-600 font-medium">Free</span> : `$${shipping.toFixed(2)}`}</span>
+                    <span>
+                      {shipping === 0 ? (
+                        <span className="text-green-600 font-medium">Free</span>
+                      ) : (
+                        `$${shipping.toFixed(2)}`
+                      )}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Tax</span>
@@ -216,8 +275,22 @@ export default function CheckoutPage() {
                   <span>Total</span>
                   <span className="text-primary">${total.toFixed(2)}</span>
                 </div>
-                <Button type="submit" size="lg" className="w-full font-semibold gap-2" disabled={submitting}>
-                  {submitting ? <><Loader2 className="w-4 h-4 animate-spin" /> Placing Order...</> : <><Check className="w-4 h-4" /> Place Order</>}
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full font-semibold gap-2"
+                  disabled={submitting}
+                >
+                  {submitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" /> Placing
+                      Order...
+                    </>
+                  ) : (
+                    <>
+                      <Check className="w-4 h-4" /> Place Order
+                    </>
+                  )}
                 </Button>
               </CardContent>
             </Card>

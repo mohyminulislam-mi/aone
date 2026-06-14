@@ -55,14 +55,6 @@ export const orderAPI = {
   updateStatus: (id, statusData) => api.put(`/orders/${id}/status`, statusData),
 };
 
-export const cartAPI = {
-  getCart: () => api.get("/cart", { params: { _t: Date.now() } }),
-  addItem: (data) => api.post("/cart", data),
-  updateItem: (id, data) => api.put(`/cart/${id}`, data),
-  removeItem: (id) => api.delete(`/cart/${id}`),
-  clearCart: () => api.delete("/cart"),
-};
-
 export const reviewAPI = {
   getProductReviews: (productId) => api.get(`/reviews/product/${productId}`),
   addReview: (productId, data) => api.post(`/reviews/${productId}`, data),

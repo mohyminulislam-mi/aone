@@ -1,20 +1,22 @@
-import './globals.css';
-import { Inter } from 'next/font/google';
-import { AuthProvider } from '@/lib/auth-context';
-import { CartProvider } from '@/lib/cart-context';
-import Header from '@/components/header';
-import Footer from '@/components/footer';
-import { Toaster } from '@/components/ui/sonner';
+import "./globals.css";
+import { Inter } from "next/font/google";
+import { AuthProvider } from "@/lib/auth-context";
+import { CartProvider } from "@/lib/cart-context";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import { Toaster } from "@/components/ui/sonner";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: 'MobilStore - Premium Engine Oils & Lubricants',
-  description: 'Shop premium engine oils, lubricants, and vehicle care products. Designed with immaculate engineering for excellent performance.',
+  title: "MobilStore - Premium Engine Oils & Lubricants",
+  description:
+    "Shop premium engine oils, lubricants, and vehicle care products. Designed with immaculate engineering for excellent performance.",
   openGraph: {
-    title: 'MobilStore - Premium Engine Oils & Lubricants',
-    description: 'Shop premium engine oils, lubricants, and vehicle care products.',
-    type: 'website',
+    title: "MobilStore - Premium Engine Oils & Lubricants",
+    description:
+      "Shop premium engine oils, lubricants, and vehicle care products.",
+    type: "website",
   },
 };
 
