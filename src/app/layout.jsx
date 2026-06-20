@@ -5,6 +5,7 @@ import { CartProvider } from "@/lib/cart-context";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Toaster } from "@/components/ui/sonner";
+import Navbar from "@/components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,7 +28,10 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <CartProvider>
             <div className="flex flex-col min-h-screen">
-              <Header />
+              <header>
+                <Header />
+                <Navbar />
+              </header>
               <main className="flex-1">{children}</main>
               <Footer />
             </div>

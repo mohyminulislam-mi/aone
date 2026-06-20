@@ -22,8 +22,8 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-border">
-      <div className="bg-primary text-primary-foreground">
+    <div className="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-border">
+      {/* <div className="bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 py-1.5 text-xs flex items-center justify-between">
           <span>Free shipping on orders over $50</span>
           <div className="hidden sm:flex items-center gap-4">
@@ -37,13 +37,15 @@ export default function Header() {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">M</span>
+              <span className="text-primary-foreground font-bold text-lg">
+                M
+              </span>
             </div>
             <span className="text-xl font-bold tracking-tight text-foreground">
               Mobil<span className="text-primary">Store</span>
@@ -57,9 +59,17 @@ export default function Header() {
             >
               Home
             </Link>
+            {/* mobile / tablet device hole eita show korbe. */}
+            <Link
+              href="/"
+              className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-md hover:bg-secondary"
+            >
+              Products
+            </Link>
+            {/* desktop / laptop device hole eita show korbe. */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-md hover:bg-secondary flex items-center gap-1">
+                <button className="hidden px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-md hover:bg-secondary flex items-center gap-1">
                   Products <ChevronDown className="w-3.5 h-3.5" />
                 </button>
               </DropdownMenuTrigger>
@@ -72,7 +82,9 @@ export default function Header() {
                 <DropdownMenuSeparator />
                 {categories.map((cat) => (
                   <DropdownMenuItem key={cat.slug} asChild>
-                    <Link href={`/products?category=${cat.slug}`}>{cat.name}</Link>
+                    <Link href={`/products?category=${cat.slug}`}>
+                      {cat.name}
+                    </Link>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -92,7 +104,10 @@ export default function Header() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Link href="/cart" className="relative p-2 hover:bg-secondary rounded-lg transition-colors">
+            <Link
+              href="/cart"
+              className="relative p-2 hover:bg-secondary rounded-lg transition-colors"
+            >
               <ShoppingCart className="w-5 h-5" />
               {itemCount > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 bg-accent text-accent-foreground text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
@@ -110,8 +125,12 @@ export default function Header() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
                   <div className="px-2 py-1.5">
-                    <p className="text-sm font-medium">{profile?.full_name || "User"}</p>
-                    <p className="text-xs text-muted-foreground">{user.email}</p>
+                    <p className="text-sm font-medium">
+                      {profile?.full_name || "User"}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {user.email}
+                    </p>
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
@@ -129,7 +148,10 @@ export default function Header() {
                     </>
                   )}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => signOut()} className="text-destructive">
+                  <DropdownMenuItem
+                    onClick={() => signOut()}
+                    className="text-destructive"
+                  >
                     Sign Out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -147,7 +169,11 @@ export default function Header() {
               className="lg:hidden p-2 hover:bg-secondary rounded-lg transition-colors"
               onClick={() => setMobileOpen(!mobileOpen)}
             >
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
             </button>
           </div>
         </div>
@@ -156,7 +182,11 @@ export default function Header() {
       {mobileOpen && (
         <div className="lg:hidden border-t border-border bg-background animate-fade-in">
           <div className="container mx-auto px-4 py-4 space-y-2">
-            <form action="/products" method="get" className="relative md:hidden">
+            <form
+              action="/products"
+              method="get"
+              className="relative md:hidden"
+            >
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="text"
@@ -189,18 +219,9 @@ export default function Header() {
                 {cat.name}
               </Link>
             ))}
-            {profile?.is_admin && (
-              <Link
-                href="/admin"
-                onClick={() => setMobileOpen(false)}
-                className="block px-3 py-2 text-sm font-medium hover:bg-secondary rounded-lg text-primary"
-              >
-                Admin Dashboard
-              </Link>
-            )}
           </div>
         </div>
       )}
-    </header>
+    </div>
   );
 }
