@@ -61,7 +61,7 @@ export default function Header() {
             </Link>
             {/* mobile / tablet device hole eita show korbe. */}
             <Link
-              href="/"
+              href="/products"
               className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors rounded-md hover:bg-secondary"
             >
               Products

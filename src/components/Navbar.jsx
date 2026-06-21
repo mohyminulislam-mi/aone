@@ -20,7 +20,7 @@ export default function Navbar() {
 useEffect(() => {
   const fetchCategories = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/products/categories");
+      const res = await fetch("https://aonelube-server.vercel.app/api/products/categories");
       const data = await res.json();
       
       // এখানে data.categories নিশ্চিত করা হয়েছে কারণ আপনার API রেসপন্সে অবজেক্ট আসছে
