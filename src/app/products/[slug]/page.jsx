@@ -25,6 +25,7 @@ import { toast } from "sonner";
 export default function ProductDetailPage() {
   const params = useParams();
   const slug = params.slug;
+  console.log("slug", slug);
   const { addItem } = useCart();
   const [product, setProduct] = useState(null);
   const [related, setRelated] = useState([]);
