@@ -9,5 +9,5 @@ export function proxy(request) {
 // export default function proxy(request) { ... }
 
 export const config = {
-  matcher: "/products/:path*",
+  matcher: "/about/:path*",
 };
